@@ -25,6 +25,7 @@ export default function Home() {
               priority
             />
           </a>
+          <h2>Tomaseli estás rezarpado!</h2>
         </div>
       </div>
 
