@@ -1,95 +1,58 @@
+"use client";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import styles from "./page.module.css";
+import styles from './globals.css'
 
 export default function Home() {
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:4000/courses`)
+      .then((res) => res.json())
+      .then(({ ok, data }) => {
+        if (ok) {
+          setCourses(data)
+        } else {
+
+        }
+      })
+      .catch((err) => console.log(err))
+  }, [])
+  console.log({courses})
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    <div style={{ padding: '15px 25px', backgroundColor: '#111', height: '100%' }}>
+      <h1>Web de CURSOS 🧠</h1>
+        {courses.map((c, i) => (
+          <div className="dfc course-container glassy" key={i} style={{styles}}>
+            <div className="dfc">
+              <Image 
+              src={c.thumbnail}
+              alt="Portada del curso"
+              width={300}
+              height={200}
+              layout="cover"
+              style={{ borderRadius: '3px', border: '1px solid #345' }}
+              />
+              <div style={{ marginLeft: '7px' }}>
+                <h2>{c.name}</h2>
+                <h3>Valor: $<span style={{ color: 'limegreen' }}>{c.price}</span></h3>
+                <h3 className="c2">Contenidos</h3>
+                <ul className="c2" style={{ marginLeft: '16px' }}>
+                {c.videos.map((video, index) => (
+                  <li key={index}>
+                    <h4>{video.title}</h4>
+                    <span style={{ fontSize: '12px' }}>Duración: {video.duration}</span>
+                    <iframe target='_self' width="600" height="320" frameBorder={'0'} src={video.url} allowfullscreen >
+                    </iframe>
+                  </li>
+                ))
+                }
+                </ul>
+              </div>
+            </div>
+          </div>
+        ))}
+    </div>
+    
   );
 }
