@@ -7,7 +7,7 @@ export default function Home() {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/courses`)
+    fetch(`https://webcursos-back.vercel.app/courses`)
       .then((res) => res.json())
       .then(({ ok, data }) => {
         if (ok) {
@@ -42,7 +42,7 @@ export default function Home() {
                   <li key={index}>
                     <h4>{video.title}</h4>
                     <span style={{ fontSize: '12px' }}>Duración: {video.duration}</span>
-                    <iframe target='_self' width="600" height="320" frameBorder={'0'} src={video.url} allowfullscreen >
+                    <iframe target='_self' width="600" height="320" frameBorder={'0'} src={video.url}>
                     </iframe>
                   </li>
                 ))
